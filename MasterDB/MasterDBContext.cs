@@ -20,13 +20,11 @@ namespace MasterDB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var builderType = typeof(IMasterDbBuilder);
-
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => builderType.IsAssignableFrom(t)
-                            && !t.IsInterface
-                            && !t.IsAbstract);
+            var types = typeof(IMasterDbBuilder).Assembly
+                .GetTypes()
+                .Where(t => typeof(IMasterDbBuilder).IsAssignableFrom(t)
+               && !t.IsInterface
+               && !t.IsAbstract);
 
             foreach (var type in types)
             {
