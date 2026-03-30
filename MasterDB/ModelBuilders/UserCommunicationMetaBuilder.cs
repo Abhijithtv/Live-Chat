@@ -13,11 +13,13 @@ namespace MasterDB.ModelBuilders
 
             entity.HasOne(x => x.User1)
                 .WithMany()
-                .HasForeignKey(x => x.UserId1);
+                .HasForeignKey(x => x.UserId1)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(x => x.User2)
                 .WithMany()
-                .HasForeignKey(x => x.UserId2);
+                .HasForeignKey(x => x.UserId2)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.Property(x => x.CurrentSequenceNumber)
                 .IsRequired()

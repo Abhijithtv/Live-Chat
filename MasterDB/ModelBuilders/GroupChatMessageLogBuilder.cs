@@ -17,7 +17,8 @@ namespace MasterDB.ModelBuilders
             //group chat 1 -> N group chat msg logs
             entity.HasOne(x => x.ToGroup)
                 .WithMany(x => x.GroupChatMessageLogs)
-                .HasForeignKey(x => x.ToGroupId);
+                .HasForeignKey(x => x.ToGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             entity.HasOne(x => x.FromUser)

@@ -22,7 +22,8 @@ namespace MasterDB.ModelBuilders
             //N members to N group chats
             entity.HasMany(x => x.Members)
                 .WithOne(y => y.GroupChat)
-                .HasForeignKey(y => y.GroupChatId);
+                .HasForeignKey(y => y.GroupChatId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.Property(x => x.StartedOn)
                 .HasDefaultValueSql("GETUTCDATE()");

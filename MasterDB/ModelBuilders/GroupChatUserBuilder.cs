@@ -13,11 +13,13 @@ namespace MasterDB.ModelBuilders
 
             entity.HasOne(x => x.User)
                 .WithMany(y => y.GroupMemberships)
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(x => x.GroupChat)
                .WithMany(y => y.Members)
-               .HasForeignKey(x => x.GroupChatId);
+               .HasForeignKey(x => x.GroupChatId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
