@@ -30,6 +30,7 @@ namespace ChatServer
             builder.Services.AddSingleton<UserSentEvent>();
             builder.Services.AddSingleton<WebSocketProcessor>();
             builder.Services.AddScoped<GroupService>();
+            builder.Services.AddScoped<UserService>();
 
             var app = builder.Build();
 

@@ -17,14 +17,14 @@ namespace ChatServer.Controllers
 
 
         [HttpPost("user-join")]
-        public IActionResult JoinGroup([FromQuery] Guid groupId, [FromQuery] Guid userId)
+        public async Task<IActionResult> JoinGroupAsync([FromQuery] Guid groupId, [FromQuery] Guid userId)
         {
-            groupService.JoinGroup(groupId, userId);
+            await groupService.JoinGroup(groupId, userId);
             return Ok();
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateGroup([FromBody] GroupDTO groupInfo)
+        public async Task<IActionResult> CreateGroup([FromBody] GroupChatDTO groupInfo)
         {
             await groupService.CreateGroup(groupInfo);
             return Created();

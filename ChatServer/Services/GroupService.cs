@@ -34,7 +34,7 @@ namespace ChatServer.Services
             }
         }
 
-        internal async Task CreateGroup(GroupDTO groupInfo)
+        internal async Task CreateGroup(GroupChatDTO groupInfo)
         {
             var group = new GroupChat
             {
@@ -46,11 +46,28 @@ namespace ChatServer.Services
             await masterDBContext.SaveChangesAsync();
         }
 
-        internal GroupChat? GetGroup(Guid groupId)
+        internal GroupChatDTO GetGroup(Guid groupId)
         {
-            return masterDBContext.GroupChat.Where(x => x.GroupChatId == groupId)
+            var group = masterDBContext.GroupChat.Where(x => x.GroupChatId == groupId)
                 .Include(y => y.Members)
+                .ThenInclude(x => x.User)
                 .FirstOrDefault();
+
+            if (group == null)
+            {
+                throw new InvalidOperationException("group not found");
+            }
+
+            return new GroupChatDTO
+            {
+                Name = group.GroupChatName,
+                Description = group.GroupChatDescription,
+                Memebers = group.Members.Select(x => new UserDTO
+                {
+                    UserEmail = x.User.UserEmail,
+                    UserName = x.User.UserName
+                }).ToList()
+            };
         }
     }
 }
