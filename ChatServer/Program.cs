@@ -1,5 +1,6 @@
 
 using ChatServer.EventHandlers;
+using ChatServer.Middlewares;
 using ChatServer.SocketHandler;
 using MasterDB;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,8 @@ namespace ChatServer
             });
 
             builder.Services.AddSingleton<ConnectionManager>();
-            builder.Services.AddScoped<UserSentEvent>();
+            builder.Services.AddSingleton<UserSentEvent>();
+            builder.Services.AddSingleton<WebSocketProcessor>();
 
             var app = builder.Build();
 
@@ -44,7 +46,7 @@ namespace ChatServer
                 KeepAliveInterval = TimeSpan.FromMinutes(10)
             });
 
-
+            app.UseMiddleware<ChatWebSocketMiddleware>();
             app.MapControllers();
 
             app.Run();

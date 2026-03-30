@@ -14,9 +14,7 @@ namespace ChatServer.SocketHandler
             while (socket.State == WebSocketState.Open)
             {
                 var serializedMsg = await ReceiveFullMessage(userId, socket);
-
                 var msg = System.Text.Json.JsonSerializer.Deserialize<ChatMessageDTO>(serializedMsg);
-
                 await userSentEvent.HandleMessage(userId, msg);
             }
         }
