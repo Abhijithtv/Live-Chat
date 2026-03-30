@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterDB", "..\MasterDB\Mas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockChatClient", "..\MockChatClient\MockChatClient.csproj", "{BBFEE848-DCB6-4E70-B361-A7E8ECDD20FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCommon", "..\ChatCommon\ChatCommon.csproj", "{191896C4-57B3-4C67-B5EC-8DFECCAB5FAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BBFEE848-DCB6-4E70-B361-A7E8ECDD20FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBFEE848-DCB6-4E70-B361-A7E8ECDD20FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBFEE848-DCB6-4E70-B361-A7E8ECDD20FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191896C4-57B3-4C67-B5EC-8DFECCAB5FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191896C4-57B3-4C67-B5EC-8DFECCAB5FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191896C4-57B3-4C67-B5EC-8DFECCAB5FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191896C4-57B3-4C67-B5EC-8DFECCAB5FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

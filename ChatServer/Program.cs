@@ -1,6 +1,7 @@
 
 using ChatServer.EventHandlers;
 using ChatServer.Middlewares;
+using ChatServer.Services;
 using ChatServer.SocketHandler;
 using MasterDB;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace ChatServer
             builder.Services.AddSingleton<ConnectionManager>();
             builder.Services.AddSingleton<UserSentEvent>();
             builder.Services.AddSingleton<WebSocketProcessor>();
+            builder.Services.AddScoped<GroupService>();
 
             var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿using ChatServer.DTO;
+﻿using ChatCommon.DTO;
 using ChatServer.EventHandlers;
 using System.Net.WebSockets;
 using System.Text;

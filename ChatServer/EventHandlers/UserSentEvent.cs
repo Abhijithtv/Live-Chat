@@ -1,4 +1,4 @@
-﻿using ChatServer.DTO;
+﻿using ChatCommon.DTO;
 
 namespace ChatServer.EventHandlers
 {
