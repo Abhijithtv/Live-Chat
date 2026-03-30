@@ -1,4 +1,6 @@
 
+using ChatServer.EventHandlers;
+using ChatServer.SocketHandler;
 using MasterDB;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +24,9 @@ namespace ChatServer
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ChatMasterDB"));
             });
 
+            builder.Services.AddSingleton<ConnectionManager>();
+            builder.Services.AddScoped<UserSentEvent>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +39,10 @@ namespace ChatServer
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseWebSockets(new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromMinutes(10)
+            });
 
 
             app.MapControllers();
