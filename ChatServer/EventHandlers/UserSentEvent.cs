@@ -1,16 +1,16 @@
 ﻿using ChatCommon.Constants;
 using ChatCommon.DTO;
 using ChatCommon.Models;
+using ChatServer.Queue;
 using MasterDB;
 using MasterDB.Entity;
 
 namespace ChatServer.EventHandlers
 {
-    public class UserSentEvent(MasterDBContext masterDBContext)
+    public class UserSentEvent(MasterDBContext masterDBContext, UserSentMsgQueue userSentMsgQueue)
     {
-        internal Task<UserSentMsgAck> HandleMessage(Guid userId, GenericChatMessageDTO msg)
+        internal async Task<UserSentMsgAck> HandleMessage(Guid userId, GenericChatMessageDTO msg)
         {
-            //todo - sent it to Queue
             //store transaction data and payload in db
             var msgInfo = new ClientMessageTracker
             {
@@ -21,8 +21,11 @@ namespace ChatServer.EventHandlers
                 IsFromGroup = msg.IsFromGroup
             };
 
+            await userSentMsgQueue.AddAsync(msg);
+
+            Console.WriteLine("Sent TO Azure Queue");
+
             //todo - db schema and save changes
-            Console.WriteLine("Send TO Azure Queue");
 
             var ack = new UserSentMsgAck()
             {
@@ -30,7 +33,7 @@ namespace ChatServer.EventHandlers
                 Status = MessageStatusEnum.InQueue.ToString(),
                 Msg = "Got Your Message and it will be handled by us"
             };
-            return Task.FromResult(ack);
+            return ack;
         }
     }
 }

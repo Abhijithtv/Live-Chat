@@ -1,6 +1,7 @@
 
 using ChatServer.EventHandlers;
 using ChatServer.Middlewares;
+using ChatServer.Queue;
 using ChatServer.Services;
 using ChatServer.SocketHandler;
 using MasterDB;
@@ -26,11 +27,13 @@ namespace ChatServer
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ChatMasterDB"));
             });
 
+            //skipping Abstraction to save time - :)
             builder.Services.AddSingleton<ConnectionManager>();
             builder.Services.AddScoped<UserSentEvent>();
             builder.Services.AddScoped<WebSocketProcessor>();
             builder.Services.AddScoped<GroupService>();
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddSingleton<UserSentMsgQueue>();
 
             var app = builder.Build();
 
