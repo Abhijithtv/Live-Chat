@@ -1,7 +1,9 @@
 ﻿using ChatCommon.DTO;
+using ChatCommon.Models;
 using ChatServer.EventHandlers;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 
 namespace ChatServer.SocketHandler
 {
@@ -14,16 +16,25 @@ namespace ChatServer.SocketHandler
             while (socket.State == WebSocketState.Open)
             {
                 var serializedMsg = await ReceiveFullMessage(userId, socket);
-                var msg = System.Text.Json.JsonSerializer.Deserialize<ChatMessageDTO>(serializedMsg);
-                await userSentEvent.HandleMessage(userId, msg);
+                var msg = JsonSerializer.Deserialize<GenericChatMessageDTO>(serializedMsg);
+                var ack = await userSentEvent.HandleMessage(userId, msg);
+                await SendAck(ack, socket, default);
             }
         }
+
+        private async Task SendAck(UserSentMsgAck ack, WebSocket socket, CancellationToken ct)
+        {
+            var serializedAck = JsonSerializer.Serialize(ack);
+            byte[] byteArray = Encoding.ASCII.GetBytes(serializedAck);
+            await socket.SendAsync(new ArraySegment<byte>(byteArray), WebSocketMessageType.Text, true, ct);
+        }
+
+
 
         private async Task<string?> ReceiveFullMessage(Guid userId, WebSocket socket, CancellationToken ct = default)
         {
             var buffer = new byte[4 * 1024];
             using var ms = new MemoryStream();
-
 
             while (true)
             {

@@ -5,15 +5,13 @@ namespace ChatServer.Middlewares
     public class ChatWebSocketMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly WebSocketProcessor _processor;
 
-        public ChatWebSocketMiddleware(RequestDelegate next, WebSocketProcessor processor)
+        public ChatWebSocketMiddleware(RequestDelegate next)
         {
             _next = next;
-            _processor = processor;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, WebSocketProcessor processor)
         {
             if (context.Request.Path != "/ws/chat")
             {
@@ -29,7 +27,7 @@ namespace ChatServer.Middlewares
 
             var userId = Guid.Parse(context.Request.Query["userId"]!);
             var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-            await _processor.Handle(userId, webSocket);
+            await processor.Handle(userId, webSocket);
         }
     }
 }

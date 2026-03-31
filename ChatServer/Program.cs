@@ -27,8 +27,8 @@ namespace ChatServer
             });
 
             builder.Services.AddSingleton<ConnectionManager>();
-            builder.Services.AddSingleton<UserSentEvent>();
-            builder.Services.AddSingleton<WebSocketProcessor>();
+            builder.Services.AddScoped<UserSentEvent>();
+            builder.Services.AddScoped<WebSocketProcessor>();
             builder.Services.AddScoped<GroupService>();
             builder.Services.AddScoped<UserService>();
 
