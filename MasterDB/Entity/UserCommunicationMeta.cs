@@ -1,5 +1,6 @@
 ﻿namespace MasterDB.Entity
 {
+    //az function do the handling (only for p2p)
     public class UserCommunicationsMeta
     {
         public Guid UserId1 { get; set; }

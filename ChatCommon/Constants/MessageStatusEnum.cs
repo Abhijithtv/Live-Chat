@@ -6,4 +6,10 @@
         InQueue = 1,
         Processed = 2,
     }
+
+    public enum ChatMessageStausEnum
+    {
+        Pending = 0,
+        Created = 1
+    }
 }

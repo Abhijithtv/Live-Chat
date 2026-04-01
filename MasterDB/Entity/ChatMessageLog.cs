@@ -1,5 +1,6 @@
 ﻿namespace MasterDB.Entity
 {
+    //created by az functions
     public class ChatMessageLog
     {
         public int LogId { get; set; }

@@ -1,5 +1,6 @@
 ﻿namespace MasterDB.Entity
 {
+    //created by az function
     public class GroupChatMessageLog
     {
         public int LogId { get; set; }

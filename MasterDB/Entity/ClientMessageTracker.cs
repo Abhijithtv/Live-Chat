@@ -1,5 +1,6 @@
 ﻿namespace MasterDB.Entity
 {
+    //from client to socket server - sent event
     public class ClientMessageTracker
     {
         public int TrackId { get; set; }

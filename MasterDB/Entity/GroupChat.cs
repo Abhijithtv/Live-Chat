@@ -1,5 +1,6 @@
 ﻿namespace MasterDB.Entity
 {
+    //created by az function for group chat
     public class GroupChat
     {
         public Guid GroupChatId { get; set; }

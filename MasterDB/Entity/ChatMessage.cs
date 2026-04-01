@@ -1,5 +1,6 @@
 ﻿namespace MasterDB.Entity
 {
+    //created by az function once it recieves the event
     public class ChatMessage
     {
         public Guid MessageId { get; set; }
