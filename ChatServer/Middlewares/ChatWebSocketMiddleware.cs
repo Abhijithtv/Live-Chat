@@ -1,4 +1,4 @@
-﻿using ChatServer.SocketHandler;
+﻿using ChatServer.Handlers.SocketHandler;
 
 namespace ChatServer.Middlewares
 {

@@ -1,11 +1,12 @@
 ﻿using ChatCommon.DTO;
 using ChatCommon.Models;
 using ChatServer.EventHandlers;
+using ChatServer.Managers;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 
-namespace ChatServer.SocketHandler
+namespace ChatServer.Handlers.SocketHandler
 {
     public class WebSocketProcessor(ConnectionManager connectionManager, UserSentEvent userSentEvent)
     {

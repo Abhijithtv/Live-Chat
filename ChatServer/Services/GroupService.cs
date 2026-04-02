@@ -1,12 +1,16 @@
 ﻿
 using ChatCommon.DTO;
+using ChatServer.Handlers.SocketHandler;
+using ChatServer.Managers;
 using MasterDB;
 using MasterDB.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatServer.Services
 {
-    public class GroupService(MasterDBContext masterDBContext)
+    public class GroupService(MasterDBContext masterDBContext,
+        MessageFwdHandler messageFwdHandler,
+        GroupMembersManager groupMembersManager)
     {
         public async Task JoinGroup(Guid groupId, Guid userId)
         {
@@ -68,6 +72,19 @@ namespace ChatServer.Services
                     UserName = x.User.UserName
                 }).ToList()
             };
+        }
+
+        public async Task SendMessageAsync(ChatMessageOpsDTO chatMessageOpsDTO)
+        {
+            var msgLog = await masterDBContext
+                .GroupChatMessageLog
+                .Include(x => x.ChatMessage)
+                .Where(x => x.ChatMessageId == chatMessageOpsDTO.MessageId)
+                .FirstAsync();
+
+            var members = groupMembersManager.GetMembersByGroupId(msgLog.ToGroupId);
+
+            await messageFwdHandler.FwdAsync(msgLog, members, chatMessageOpsDTO.TransactionId);
         }
     }
 }
