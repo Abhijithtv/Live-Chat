@@ -34,12 +34,22 @@ namespace ChatServer.Queue
             return true;
         }
 
-        public async Task AddAsync(GenericChatMessageDTO msg)
+        public async Task<bool> AddAsync(GenericChatMessageDTO msg)
         {
             InitSender();
             string body = JsonSerializer.Serialize(msg);
             var message = new ServiceBusMessage(body);
-            await _sender.SendMessageAsync(message);
+            try
+            {
+                await _sender.SendMessageAsync(message);
+            }
+            catch (ServiceBusException ex)
+            {
+                //in future: Add a log for this error
+                return false;
+            }
+
+            return true;
         }
     }
 }

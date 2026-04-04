@@ -1,0 +1,45 @@
+1) Failure
+
+case 1: client sent msg
+
+
+2) User opens Apps
+	2.1) Client periodically pushes last read msg
+	2.2) We keep the last read seqId in db per user (for personall and group chat)
+	2.3) and we perodically update last read seq no
+	2.4) When user opens => send msg with seq Id >= current & (To || fromUser) = client userId
+
+3) Sequence Number
+	3.1) Currently, seq no is applied in groupLevel
+	3.2) Seq no is value per msg (not specific to a particular group or user)
+	3.3) benefit 
+		3.3.1) easy ordering in a group and personal chat
+		3.3.2) 
+
+4) How to display msg ?
+	4.1) seq no can be non continous also doesnt abide with userId
+	4.2) if i were to display msg and laster a new msg comes with a lower seqid ?
+		4.2.1) Can i ignore - i cant
+		4.2.2) Can i put msg in between read msgs - i cant
+		4.2.3) Can i show blank/loading symbol - yes perfect
+			4.2.3.1) How can i identify no of messages that may or maynot come ?
+			### idea ###
+			make 2 seq no -> (both wont have any gap)
+				1) seq no per user 
+					- assigned to every msg with dst or from == userId
+					- user req msgs with seqid >= lastReadSeqId for cur userId
+				2) seq no per user chat
+					- helps in finding the missing msg per P2P and User chat
+					- inc seq in if its sent or destined of cur userId
+				inc and perUser (inc or dec seq no if any msg with dst==userId or from==userId)
+				3) az function sets the seq id in user and chat level
+
+####Conclusion####
+
+1) Seq id is inc value
+2) Per p2p chat and group chat the seq number is maintaned per user
+3) On login, api -> get me last n chats and their last read seq id
+4) Client will show error in loading messages after waiting an offset amount of time for pending messages
+5) Client share last read msg to server and we will periodically flush that to db
+
+Please note - group chat will the priority

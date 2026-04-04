@@ -2,9 +2,11 @@
 {
     public enum MessageStatusEnum
     {
-        Pending = 0,
-        InQueue = 1,
-        Processed = 2,
+        None = 0,
+        Failed = 1,
+        InQueue = 2,
+        InProcessing = 3,
+        Processed = 4,
     }
 
     public enum ChatMessageStausEnum

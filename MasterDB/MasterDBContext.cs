@@ -13,6 +13,7 @@ namespace MasterDB
         public DbSet<GroupChatUser> GroupChatUser { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserCommunicationsMeta> UserCommunicationsMeta { get; set; }
+        public DbSet<ClientMessage> ClientMessage { get; set; } //todo - modal building
 
         public MasterDBContext(DbContextOptions options) : base(options)
         {
