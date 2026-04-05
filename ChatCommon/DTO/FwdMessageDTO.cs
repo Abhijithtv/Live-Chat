@@ -9,5 +9,6 @@ namespace ChatCommon.DTO
         public int SequenceNumber { get; set; }
         public string Message { get; set; }
         public DateTime CreatedOnUTC { get; set; }
+        public Guid MessageId { get; set; }
     }
 }
