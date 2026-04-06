@@ -35,7 +35,9 @@ namespace ChatServer
             builder.Services.AddScoped<GroupService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddSingleton<UserSentMsgQueue>();
-
+            builder.Services.AddScoped<MessageFwdHandler>();
+            builder.Services.AddScoped<GroupMembersManager>();
+            builder.Services.AddMemoryCache();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

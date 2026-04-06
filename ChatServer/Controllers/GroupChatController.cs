@@ -7,6 +7,7 @@ namespace ChatServer.Controllers
     [Route("api/v1/groupChat")]
     public class GroupChatController(GroupService groupService) : Controller
     {
+        [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] ChatMessageOpsDTO chatMessageOpsDTO)
         {
             await groupService.SendMessageAsync(chatMessageOpsDTO);

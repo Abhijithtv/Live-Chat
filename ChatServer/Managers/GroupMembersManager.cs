@@ -5,7 +5,7 @@ namespace ChatServer.Managers
 {
     public class GroupMembersManager(MasterDBContext masterDBContext, IMemoryCache cache)
     {
-        private readonly MemoryCacheEntryOptions _cacheOptions = new MemoryCacheEntryOptions
+        private static readonly MemoryCacheEntryOptions _cacheOptions = new MemoryCacheEntryOptions
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5), // TTL
             SlidingExpiration = TimeSpan.FromMinutes(2),               // refresh if accessed

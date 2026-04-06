@@ -2,7 +2,7 @@
 
 namespace ChatOpsAzFunction.ChatSentEventHandlers
 {
-    internal interface IChatSentEventHandler
+    public interface IChatSentEventHandler
     {
         Task ProcessAsync(GenericChatMessageDTO message);
     }

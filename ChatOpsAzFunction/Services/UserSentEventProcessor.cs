@@ -11,7 +11,7 @@ namespace ChatOpsAzFunction.Services
         ChatSentEventHandlerFactory chatSentEventHandlerFactory,
         MasterDBContext masterDBContext)
     {
-        internal async Task HandleAsync(ServiceBusReceivedMessage message)
+        public async Task HandleAsync(ServiceBusReceivedMessage message)
         {
             var payLoad = JsonSerializer.Deserialize<GenericChatMessageDTO>(message.Body)!;
             await StoreMessageInfoAsync(message, payLoad);
