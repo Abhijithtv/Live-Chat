@@ -16,6 +16,7 @@ namespace MasterDB.ModelBuilders
 
             modelBuilder.Entity<SentEventToQueueMapping>()
                 .Property(x => x.AzureCorrelationId)
+                .IsRequired(false)
                 .HasMaxLength(256);
 
             modelBuilder.Entity<SentEventToQueueMapping>()

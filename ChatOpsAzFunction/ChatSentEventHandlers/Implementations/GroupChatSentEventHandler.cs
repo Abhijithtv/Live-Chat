@@ -41,9 +41,9 @@ namespace ChatOpsAzFunction.ChatSentEventHandlers.Implementations
             await _SendAckToWebServerAsync(chatMessage.MessageId, message.TransactionId);
         }
 
-        private async Task<ChatMessage> CreateChatMessageWithSeqNoAsync(GenericChatMessageDTO message)
+        private async Task<ChatMessageDTO> CreateChatMessageWithSeqNoAsync(GenericChatMessageDTO message)
         {
-            var res = await masterDBContext.Database.SqlQuery<ChatMessage>($@"
+            var res = await masterDBContext.Database.SqlQuery<ChatMessageDTO>($@"
                         BEGIN TRY
                             BEGIN TRAN;
 
@@ -81,8 +81,8 @@ namespace ChatOpsAzFunction.ChatSentEventHandlers.Implementations
                             ROLLBACK;
                             THROW;
                         END CATCH
-                        ").FirstAsync();
-            return res;
+                        ").ToListAsync();
+            return res.First();
         }
 
         private async Task<bool> _IsCandidateToProcessAsync(GenericChatMessageDTO message)
@@ -109,7 +109,7 @@ namespace ChatOpsAzFunction.ChatSentEventHandlers.Implementations
             await chatServerClient.SendGroupChatProcessAckAsync(payLoad);
         }
 
-        private async Task _InsertIntoGroupChatLogAsync(ChatMessage chatMessage, GenericChatMessageDTO message)
+        private async Task _InsertIntoGroupChatLogAsync(ChatMessageDTO chatMessage, GenericChatMessageDTO message)
         {
             //todo - add unique constraint
             var GroupChatMessageLog = new GroupChatMessageLog()
