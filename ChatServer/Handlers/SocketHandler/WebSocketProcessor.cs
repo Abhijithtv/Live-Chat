@@ -1,4 +1,5 @@
-﻿using ChatCommon.DTO;
+﻿using ChatCommon.Constants;
+using ChatCommon.DTO;
 using ChatCommon.Models;
 using ChatServer.EventHandlers;
 using ChatServer.Managers;
@@ -18,7 +19,22 @@ namespace ChatServer.Handlers.SocketHandler
             {
                 var serializedMsg = await ReceiveFullMessage(userId, socket);
                 var msg = JsonSerializer.Deserialize<GenericChatMessageDTO>(serializedMsg);
-                var ack = await userSentEvent.HandleMessage(userId, msg);
+
+                UserSentMsgAck ack;
+                try
+                {
+                    ack = await userSentEvent.HandleMessage(userId, msg);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    ack = new UserSentMsgAck()
+                    {
+                        TransactionId = msg.TransactionId,
+                        Status = MessageStatusEnum.Failed.ToString(),
+                        Msg = "Internal Server Error"
+                    };
+                }
                 await SendAck(ack, socket, default);
             }
         }

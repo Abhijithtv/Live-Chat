@@ -4,6 +4,7 @@ using MasterDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MasterDB.Migrations
 {
     [DbContext(typeof(MasterDBContext))]
-    partial class MasterDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260406045404_groupchat_v1")]
+    partial class groupchat_v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +91,7 @@ namespace MasterDB.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ChatMessageId")
+                    b.Property<Guid>("ChatMessageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdatedOnUTC")
@@ -101,8 +104,7 @@ namespace MasterDB.Migrations
                     b.HasKey("TransactionId", "SenderId");
 
                     b.HasIndex("ChatMessageId")
-                        .IsUnique()
-                        .HasFilter("[ChatMessageId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("ClientMessage");
                 });
@@ -294,7 +296,9 @@ namespace MasterDB.Migrations
                 {
                     b.HasOne("MasterDB.Entity.ChatMessage", "ChatMessage")
                         .WithOne("ClientMessage")
-                        .HasForeignKey("MasterDB.Entity.ClientMessage", "ChatMessageId");
+                        .HasForeignKey("MasterDB.Entity.ClientMessage", "ChatMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ChatMessage");
                 });
