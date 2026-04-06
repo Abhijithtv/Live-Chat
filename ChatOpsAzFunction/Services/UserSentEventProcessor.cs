@@ -1,23 +1,26 @@
 ﻿using Azure.Messaging.ServiceBus;
 using ChatCommon.DTO;
 using ChatOpsAzFunction.ChatEventHandlers;
+using MasterDB;
 using MasterDB.Entity;
 using System.Text.Json;
 
 namespace ChatOpsAzFunction.Services
 {
-    public class UserSentEventProcessor(ChatSentEventHandlerFactory chatSentEventHandlerFactory)
+    public class UserSentEventProcessor(
+        ChatSentEventHandlerFactory chatSentEventHandlerFactory,
+        MasterDBContext masterDBContext)
     {
         internal async Task HandleAsync(ServiceBusReceivedMessage message)
         {
             var payLoad = JsonSerializer.Deserialize<GenericChatMessageDTO>(message.Body)!;
-            StoreMessageInfo(message, payLoad);
+            await StoreMessageInfoAsync(message, payLoad);
             await chatSentEventHandlerFactory
                 .GetHandler(payLoad)
                 .ProcessAsync(payLoad);
         }
 
-        private void StoreMessageInfo(ServiceBusReceivedMessage message, GenericChatMessageDTO payLoad)
+        private async Task StoreMessageInfoAsync(ServiceBusReceivedMessage message, GenericChatMessageDTO payLoad)
         {
             var info = new SentEventToQueueMapping
             {
@@ -27,7 +30,8 @@ namespace ChatOpsAzFunction.Services
                 ProcessCount = message.DeliveryCount
             };
 
-            //todo - store to db this info
+            masterDBContext.SentEventToQueueMappings.Add(info);
+            await masterDBContext.SaveChangesAsync();
         }
     }
 }

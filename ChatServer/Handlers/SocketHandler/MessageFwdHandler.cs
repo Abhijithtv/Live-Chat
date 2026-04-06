@@ -1,4 +1,5 @@
-﻿using ChatCommon.DTO;
+﻿using ChatCommon.Constants;
+using ChatCommon.DTO;
 using ChatServer.Managers;
 using MasterDB;
 using MasterDB.Entity;
@@ -23,11 +24,21 @@ namespace ChatServer.Handlers.SocketHandler
             };
 
             var resp = JsonSerializer.SerializeToUtf8Bytes(fwdMessageDTO);
+
             foreach (var member in members)
             {
                 var connection = connectionManager.GetConnection(member);
                 await connection!.SendAsync(new ArraySegment<byte>(resp), WebSocketMessageType.Text, true, default);
             }
+
+            var clientMessage = new ClientMessage()
+            {
+                TransactionId = transactionId,
+                Status = MessageStatusEnum.Processed.ToString()
+            };
+            masterDBContext.ClientMessage.Attach(clientMessage);
+            masterDBContext.ClientMessage.Entry(clientMessage).Property(x => x.Status).IsModified = true;
+            await masterDBContext.SaveChangesAsync();
         }
     }
 }

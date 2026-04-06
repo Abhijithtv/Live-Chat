@@ -9,6 +9,7 @@
         public string Status { get; set; }
         public ICollection<ChatMessageLog> ChatMessageLogs { get; set; }
         public ICollection<GroupChatMessageLog> GroupChatMessageLogs { get; set; }
+        public ClientMessage ClientMessage { get; set; }
 
     }
 }
